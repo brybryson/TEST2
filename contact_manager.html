@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Manager</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .content {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 30px;
+            padding: 30px;
+        }
+
+        .form-section {
+            background: #f8f9ff;
+            padding: 25px;
+            border-radius: 15px;
+            border: 1px solid #e0e6ff;
+        }
+
+        .form-section h2 {
+            color: #4a5568;
+            margin-bottom: 20px;
+            font-size: 1.3rem;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #2d3748;
+            font-weight: 600;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #4facfe;
+            box-shadow: 0 0 0 3px rgba(79, 172, 254, 0.1);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .contacts-section {
+            background: #ffffff;
+            padding: 25px;
+            border-radius: 15px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .contacts-section h2 {
+            color: #4a5568;
+            margin-bottom: 20px;
+            font-size: 1.3rem;
+        }
+
+        .contact-card {
+            background: #f7fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .contact-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .contact-header {
+            display: flex;
+            justify-content: between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .contact-name {
+            font-weight: 700;
+            color: #2d3748;
+            font-size: 1.1rem;
+        }
+
+        .delete-btn {
+            background: #e53e3e;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .delete-btn:hover {
+            background: #c53030;
+        }
+
+        .contact-info {
+            color: #718096;
+            margin-bottom: 5px;
+        }
+
+        .contact-message {
+            color: #4a5568;
+            font-style: italic;
+            background: #edf2f7;
+            padding: 10px;
+            border-radius: 6px;
+            margin-top: 10px;
+        }
+
+        .empty-state {
+            text-align: center;
+            color: #a0aec0;
+            padding: 40px;
+            font-style: italic;
+        }
+
+        .status-message {
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .status-success {
+            background: #c6f6d5;
+            color: #22543d;
+            border: 1px solid #9ae6b4;
+        }
+
+        .status-error {
+            background: #fed7d7;
+            color: #742a2a;
+            border: 1px solid #fc8181;
+        }
+
+        @media (max-width: 768px) {
+            .content {
+                grid-template-columns: 1fr;
+                gap: 20px;
+                padding: 20px;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📞 Contact Manager</h1>
+            <p>Store and manage your contacts with MongoDB</p>
+        </div>
+
+        <div class="content">
+            <div class="form-section">
+                <h2>Add New Contact</h2>
+                <div id="statusMessage"></div>
+                
+                <form id="contactForm">
+                    <div class="form-group">
+                        <label for="name">Name *</label>
+                        <input type="text" id="name" name="name" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Email *</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="phone">Phone</label>
+                        <input type="tel" id="phone" name="phone">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="message">Message</label>
+                        <textarea id="message" name="message" placeholder="Enter your message..."></textarea>
+                    </div>
+
+                    <button type="submit" class="btn">Add Contact</button>
+                </form>
+            </div>
+
+            <div class="contacts-section">
+                <h2>All Contacts (<span id="contactCount">0</span>)</h2>
+                <div id="contactsList">
+                    <div class="empty-state">
+                        No contacts yet. Add your first contact!
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // In-memory database simulation (since we can't use real MongoDB in this environment)
+        let contacts = [];
+        let nextId = 1;
+
+        // Status message functions
+        function showStatus(message, type) {
+            const statusDiv = document.getElementById('statusMessage');
+            statusDiv.innerHTML = `<div class="status-message status-${type}">${message}</div>`;
+            setTimeout(() => {
+                statusDiv.innerHTML = '';
+            }, 3000);
+        }
+
+        // Add contact function
+        function addContact(contactData) {
+            const contact = {
+                _id: nextId++,
+                ...contactData,
+                createdAt: new Date()
+            };
+            contacts.push(contact);
+            return contact;
+        }
+
+        // Delete contact function
+        function deleteContact(id) {
+            const index = contacts.findIndex(contact => contact._id == id);
+            if (index > -1) {
+                contacts.splice(index, 1);
+                return true;
+            }
+            return false;
+        }
+
+        // Get all contacts function
+        function getAllContacts() {
+            return contacts.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+        }
+
+        // Render contacts list
+        function renderContacts() {
+            const contactsList = document.getElementById('contactsList');
+            const contactCount = document.getElementById('contactCount');
+            const allContacts = getAllContacts();
+            
+            contactCount.textContent = allContacts.length;
+
+            if (allContacts.length === 0) {
+                contactsList.innerHTML = '<div class="empty-state">No contacts yet. Add your first contact!</div>';
+                return;
+            }
+
+            contactsList.innerHTML = allContacts.map(contact => `
+                <div class="contact-card">
+                    <div class="contact-header">
+                        <div class="contact-name">${escapeHtml(contact.name)}</div>
+                        <button class="delete-btn" onclick="handleDelete(${contact._id})">Delete</button>
+                    </div>
+                    <div class="contact-info">📧 ${escapeHtml(contact.email)}</div>
+                    ${contact.phone ? `<div class="contact-info">📱 ${escapeHtml(contact.phone)}</div>` : ''}
+                    ${contact.message ? `<div class="contact-message">"${escapeHtml(contact.message)}"</div>` : ''}
+                    <div class="contact-info" style="font-size: 12px; margin-top: 10px;">
+                        Added: ${new Date(contact.createdAt).toLocaleString()}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Escape HTML to prevent XSS
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // Handle form submission
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(e.target);
+            const contactData = {
+                name: formData.get('name').trim(),
+                email: formData.get('email').trim(),
+                phone: formData.get('phone').trim(),
+                message: formData.get('message').trim()
+            };
+
+            // Basic validation
+            if (!contactData.name || !contactData.email) {
+                showStatus('Name and email are required!', 'error');
+                return;
+            }
+
+            // Email validation
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(contactData.email)) {
+                showStatus('Please enter a valid email address!', 'error');
+                return;
+            }
+
+            try {
+                const newContact = addContact(contactData);
+                showStatus(`Contact "${newContact.name}" added successfully!`, 'success');
+                e.target.reset();
+                renderContacts();
+            } catch (error) {
+                showStatus('Error adding contact. Please try again.', 'error');
+            }
+        });
+
+        // Handle contact deletion
+        function handleDelete(id) {
+            if (confirm('Are you sure you want to delete this contact?')) {
+                if (deleteContact(id)) {
+                    showStatus('Contact deleted successfully!', 'success');
+                    renderContacts();
+                } else {
+                    showStatus('Error deleting contact!', 'error');
+                }
+            }
+        }
+
+        // Add some sample data for demonstration
+        function loadSampleData() {
+            const sampleContacts = [
+                {
+                    name: "John Doe",
+                    email: "john.doe@example.com",
+                    phone: "+1 (555) 123-4567",
+                    message: "Interested in your services. Please contact me soon!"
+                },
+                {
+                    name: "Jane Smith",
+                    email: "jane.smith@example.com",
+                    phone: "+1 (555) 987-6543",
+                    message: "Looking for more information about your products."
+                }
+            ];
+
+            sampleContacts.forEach(contact => addContact(contact));
+        }
+
+        // Initialize the application
+        function init() {
+            loadSampleData();
+            renderContacts();
+            showStatus('Welcome to Contact Manager! This demo uses in-memory storage.', 'success');
+        }
+
+        // Start the application
+        init();
+    </script>
+</body>
+</html>
